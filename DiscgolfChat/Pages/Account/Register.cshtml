@@ -1,0 +1,11 @@
+﻿@page
+@model DiscgolfChat.Pages.Account.RegisterPageModel
+
+<h2>Registrera</h2>
+
+<form method="post">
+    <input asp-for="NewUser.Username" class="form-control" placeholder="Användarnamn" />
+    <input asp-for="NewUser.Password" type="password" class="form-control" placeholder="Lösenord" />
+    <input asp-for="NewUser.AvatarUrl" class="form-control" placeholder="Avatar URL (valfritt)" />
+    <button type="submit" class="btn btn-success">Registrera</button>
+</form>

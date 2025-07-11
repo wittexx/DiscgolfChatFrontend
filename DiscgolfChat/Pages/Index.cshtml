@@ -1,0 +1,23 @@
+﻿@page
+@model DiscgolfChat.Pages.IndexModel
+@{
+    ViewData["Title"] = "DiscgolfChat - Forum";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Topics?.Any() == true)
+{
+    <ul class="list-group">
+        @foreach (var topic in Model.Topics)
+        {
+            <li class="list-group-item">
+                <a asp-page="/Topics/Details" asp-route-id="@topic.Id">@topic.Title</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Inga ämnen tillgängliga ännu.</p>
+}

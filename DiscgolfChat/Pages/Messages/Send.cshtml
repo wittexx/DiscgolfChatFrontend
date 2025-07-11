@@ -1,0 +1,19 @@
+﻿@page "{toUserId:int?}"
+@model DiscgolfChat.Pages.Messages.SendModel
+@{
+    ViewData["Title"] = "Skicka Meddelande";
+}
+
+<h2>Skicka Meddelande till @Model.ReceiverName</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Message.ToUserId" /> 
+
+    <div class="form-group">
+        <label for="Message_Content">Meddelande</label>
+        <textarea asp-for="Message.Content" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Message.Content" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Skicka</button>
+</form>

@@ -1,0 +1,17 @@
+﻿@page
+@model DiscgolfChat.Pages.Admin.CreateTopicModel
+
+@{
+    ViewData["Title"] = "Skapa nytt ämne";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="NewTopic.Title" class="form-label"></label>
+        <input asp-for="NewTopic.Title" class="form-control" />
+        <span asp-validation-for="NewTopic.Title" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Skapa ämne</button>
+</form>

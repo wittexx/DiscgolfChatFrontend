@@ -1,0 +1,106 @@
+﻿@page "{id:int}"
+@model DiscgolfChat.Pages.Topics.DetailsModel
+@{
+    ViewData["Title"] = "Ämnesdetaljer";
+}
+
+<h2>@Model.Topic?.Title</h2>
+<hr />
+
+<h3>Inlägg</h3>
+
+@if (Model.Posts == null || !Model.Posts.Any())
+{
+    <p>Det finns inga inlägg än.</p>
+}
+else
+{
+    foreach (var post in Model.Posts)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>
+                    <a asp-page="/Messages/Send" asp-route-toUserId="@post.AuthorId">
+                        @post.AuthorName
+                    </a>
+                </h5>
+                <p>@post.Content</p>
+                <small>Skapad: @post.CreatedAt.ToLocalTime().ToString("g")</small>
+
+                <form method="post" asp-page-handler="Report" asp-route-id="@Model.Topic.Id" asp-route-postId="@post.Id">
+                    <button type="submit" class="btn btn-sm btn-danger mt-2">Rapportera</button>
+                </form>
+
+
+                
+                <h6 class="mt-3">Kommentarer:</h6>
+                @if (post.Comments != null && post.Comments.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var comment in post.Comments)
+                        {
+                            <li class="list-group-item">
+                                <strong>
+                                    <a asp-page="/Messages/Send" asp-route-toUserId="@comment.AuthorId">
+                                        @comment.AuthorName
+                                    </a>
+                                </strong> @comment.Content
+                                <br />
+                                <small>@comment.CreatedAt.ToLocalTime().ToString("g")</small>
+                                <form method="post" asp-page-handler="Report" asp-route-id="@Model.Topic.Id" asp-route-commentId="@comment.Id">
+                                    <button type="submit" class="btn btn-sm btn-warning mt-1">Rapportera kommentar</button>
+                                </form>
+
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Inga kommentarer ännu.</p>
+                }
+
+               
+                <a asp-page="/Comments/Create" asp-route-postId="@post.Id" class="btn btn-link mt-2">Kommentera</a>
+            </div>
+        </div>
+    }
+}
+
+<hr />
+
+<h3>Skapa ett nytt inlägg</h3>
+<form method="post">
+    <div class="form-group">
+        <textarea class="form-control" asp-for="NewPost.Content" rows="4" placeholder="Skriv ditt inlägg här..."></textarea>
+        <span asp-validation-for="NewPost.Content" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Publicera inlägg</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        async function reportItem(type, id) {
+            const data = {
+                postId: type === 'post' ? id : null,
+                commentId: type === 'comment' ? id : null
+            };
+
+            const response = await fetch('https://localhost:7292/api/reports', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert('Rapport skickad.');
+            } else {
+                alert('Fel vid rapportering.');
+            }
+        }
+    </script>
+}

@@ -1,0 +1,63 @@
+﻿@page
+@model DiscgolfChat.Pages.Admin.ReportsModel
+@{
+    ViewData["Title"] = "Rapporter";
+}
+
+<h2>Rapporterade Inlägg och Kommentarer</h2>
+
+@if (!Model.Reports.Any())
+{
+    <p>Inga rapporter har inkommit.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Typ</th>
+                <th>Innehåll</th>
+                <th>Granskad</th>
+                <th>Åtgärder</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var report in Model.Reports)
+            {
+                <tr>
+                    <td>@(report.PostId != null ? "Inlägg" : "Kommentar")</td>
+                    <td>
+                        @if (report.PostId != null)
+                        {
+                            <span>@report.PostContent</span>
+                        }
+                        else
+                        {
+                            <span>@report.CommentContent</span>
+                        }
+                    </td>
+                    <td>@(report.Reviewed ? "✔️" : "❌")</td>
+                    <td>
+                        @if (!report.Reviewed)
+                        {
+                            <form method="post" asp-page-handler="Review">
+                                <input type="hidden" name="id" value="@report.Id" />
+                                <input type="hidden" name="offensive" value="true" />
+                                <button type="submit" class="btn btn-danger btn-sm">Markera som stötande</button>
+                            </form>
+                            <form method="post" asp-page-handler="Review" class="mt-1">
+                                <input type="hidden" name="id" value="@report.Id" />
+                                <input type="hidden" name="offensive" value="false" />
+                                <button type="submit" class="btn btn-secondary btn-sm">Markera som OK</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span>Granskad</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

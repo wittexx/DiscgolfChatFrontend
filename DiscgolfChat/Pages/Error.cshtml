@@ -1,0 +1,15 @@
+﻿@page
+@model DiscgolfChat.Pages.ErrorModel
+@{
+    ViewData["Title"] = "Fel inträffade";
+}
+
+<h1 class="text-danger">Ett fel har inträffat.</h1>
+<p class="text-danger">Vi beklagar, något gick fel.</p>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}

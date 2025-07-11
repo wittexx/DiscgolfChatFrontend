@@ -1,0 +1,10 @@
+﻿@page
+@model DiscgolfChat.Pages.Account.LoginPageModel
+
+<h2>Logga in</h2>
+
+<form method="post">
+    <input asp-for="LoginUser.Username" class="form-control" placeholder="Användarnamn" />
+    <input asp-for="LoginUser.Password" type="password" class="form-control" placeholder="Lösenord" />
+    <button type="submit" class="btn btn-primary">Logga in</button>
+</form>
